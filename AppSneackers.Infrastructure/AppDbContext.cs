@@ -39,6 +39,8 @@ namespace AppSneackers.Infrastructure
                             b.ComplexProperty(e => e.WorkPhone);
                             b.ComplexProperty(e => e.MobilePhone);
                         });
+
+                    //b.Property(x => x.Contact).IsRequired(false);
                 });
 
             //modelBuilder.Entity<Sneacker>(

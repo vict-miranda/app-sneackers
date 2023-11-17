@@ -182,6 +182,135 @@ namespace AppSneackers.Infrastructure.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
+            modelBuilder.Entity("AppSneackers.Domain.Entities.Sneacker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Size")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sneackers", (string)null);
+                });
+
+            modelBuilder.Entity("AppSneackers.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Contact", "AppSneackers.Domain.Entities.User.Contact#Contact", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.ComplexProperty<Dictionary<string, object>>("Address", "AppSneackers.Domain.Entities.User.Contact#Contact.Address#Address", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("Country")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("Line1")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("Line2")
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("PostCode")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+                                });
+
+                            b1.ComplexProperty<Dictionary<string, object>>("HomePhone", "AppSneackers.Domain.Entities.User.Contact#Contact.HomePhone#PhoneNumber", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<int>("CountryCode")
+                                        .HasColumnType("int");
+
+                                    b2.Property<long>("Number")
+                                        .HasColumnType("bigint");
+                                });
+
+                            b1.ComplexProperty<Dictionary<string, object>>("MobilePhone", "AppSneackers.Domain.Entities.User.Contact#Contact.MobilePhone#PhoneNumber", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<int>("CountryCode")
+                                        .HasColumnType("int");
+
+                                    b2.Property<long>("Number")
+                                        .HasColumnType("bigint");
+                                });
+
+                            b1.ComplexProperty<Dictionary<string, object>>("WorkPhone", "AppSneackers.Domain.Entities.User.Contact#Contact.WorkPhone#PhoneNumber", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<int>("CountryCode")
+                                        .HasColumnType("int");
+
+                                    b2.Property<long>("Number")
+                                        .HasColumnType("bigint");
+                                });
+                        });
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
             modelBuilder.Entity("AppSneackers.Domain.Entities.Order", b =>
                 {
                     b.HasOne("AppSneackers.Domain.Entities.Customer", "Customer")
@@ -193,9 +322,25 @@ namespace AppSneackers.Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("AppSneackers.Domain.Entities.Sneacker", b =>
+                {
+                    b.HasOne("AppSneackers.Domain.Entities.User", "User")
+                        .WithMany("Sneackers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AppSneackers.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("AppSneackers.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Sneackers");
                 });
 #pragma warning restore 612, 618
         }
