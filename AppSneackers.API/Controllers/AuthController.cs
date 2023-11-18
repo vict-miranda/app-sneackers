@@ -29,8 +29,9 @@ namespace AppSneackers.API.Controllers
         /// <returns></returns>
         /// <response code="200">Logued successfully.</response>
         /// <response code="400">Bad Request.</response>
-        [HttpPost]
-        public async Task<IActionResult> Post(AuthorizationDto _userData)
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] AuthorizationDto _userData)
         {
             if (_userData != null && _userData.Email != null && _userData.Password != null)
             {
@@ -38,30 +39,21 @@ namespace AppSneackers.API.Controllers
 
                 if (user != null)
                 {
-                    //create claims details based on the user information
-                    var claims = new[] {
-                        new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                        new Claim("UserId", user.Id.ToString()),
-                        new Claim("DisplayName", $"{user.FirstName} {user.LastName}"),
-                        new Claim("Email", user.Email)
-                    };
-
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                    var token = new JwtSecurityToken(
-                        _configuration["Jwt:Issuer"],
-                        _configuration["Jwt:Audience"],
-                        claims,
-                        expires: DateTime.UtcNow.AddMinutes(10),
-                        signingCredentials: signIn);
-
-                    return Ok(new
+                    // authentication successful so generate jwt token
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+                    var tokenDescriptor = new SecurityTokenDescriptor
                     {
-                        User = user,
-                        AccessToken = new JwtSecurityTokenHandler().WriteToken(token)
-                    });
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                            new Claim(ClaimTypes.Name, user.Id.ToString()),
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(7),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
                 }
                 else
                 {
@@ -72,6 +64,8 @@ namespace AppSneackers.API.Controllers
             {
                 return BadRequest();
             }
+
+            
         }
 
         private async Task<UserDto> GetUser(string email, string password)

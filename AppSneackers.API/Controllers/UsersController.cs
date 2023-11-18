@@ -1,5 +1,4 @@
-﻿//using AppSneackers.API.Helpers;
-using AppSneackers.API.Mapping.Sneacker;
+﻿using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AppSneackers.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -25,8 +25,7 @@ namespace AppSneackers.API.Controllers
         /// <returns></returns>
         /// <response code="200">Gets successfully.</response>
         /// <response code="401">Not authorized.</response>
-        [HttpGet("{userId}")]
-        [Authorize]
+        [HttpGet("{userId}")]        
         public async Task<IActionResult> Get(int userId)
         {
             var response = await _userService.GetSneackersByUserId(userId);
