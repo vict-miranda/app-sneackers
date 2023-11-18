@@ -31,15 +31,70 @@ namespace AppSneackers.Infrastructure
                         e => e.Contact,
                         b =>
                         {
-                            b.ComplexProperty(e => e.Address);
-                            b.ComplexProperty(e => e.HomePhone);
-                            b.ComplexProperty(e => e.WorkPhone);
-                            b.ComplexProperty(e => e.MobilePhone);
-                        });
+                            b.ComplexProperty(e => e.Address).Property(x => x.Line1)
+                                .HasColumnName("Line1")
+                                .HasColumnType("varchar")
+                                .HasMaxLength(200)
+                                .IsRequired(false);
 
-                    //b.Property(x => x.Contact).IsRequired(false);
+                            b.ComplexProperty(e => e.Address).Property(x => x.PostCode)
+                                .HasColumnName("PostCode")
+                                .HasColumnType("varchar")
+                                .HasMaxLength(200)
+                                .IsRequired(false);
+
+                            b.ComplexProperty(e => e.Address).Property(x => x.City)
+                                .HasColumnName("City")
+                                .HasColumnType("varchar")
+                                .HasMaxLength(200)
+                                .IsRequired(false);
+
+                            b.ComplexProperty(e => e.Address).Property(x => x.Country)
+                                .HasColumnName("Country")
+                                .HasColumnType("varchar")
+                                .HasMaxLength(200)
+                                .IsRequired(false);
+
+                            b.ComplexProperty(e => e.Address).Property(x => x.Line2)
+                                .HasColumnName("Line2")
+                                .HasColumnType("varchar")
+                                .HasMaxLength(200)
+                                .IsRequired(false);
+
+                            b.ComplexProperty(e => e.MobilePhone).Property(x => x.CountryCode)
+                                .HasColumnName("CountryCode")
+                                .HasColumnType("int");
+
+                            b.ComplexProperty(e => e.MobilePhone).Property(x => x.Number)
+                                .HasColumnName("Number")
+                                .HasColumnType("int");
+                        });
                 });
-          
+
+            modelBuilder.Entity<User>().Property(p => p.FirstName)
+                .HasColumnName("FirstName")
+                .HasColumnType("varchar")
+                .HasMaxLength(50)
+                .IsRequired();
+
+            modelBuilder.Entity<User>().Property(p => p.LastName)
+               .HasColumnName("LastName")
+               .HasColumnType("varchar")
+               .HasMaxLength(50)
+               .IsRequired();
+
+            modelBuilder.Entity<User>().Property(p => p.Email)
+               .HasColumnName("Email")
+               .HasColumnType("varchar")
+               .HasMaxLength(200)
+               .IsRequired();
+
+            modelBuilder.Entity<User>().Property(p => p.Password)
+               .HasColumnName("Password")
+               .HasColumnType("varchar")
+               .HasMaxLength(250)
+               .IsRequired();
+
         }
     }
 }

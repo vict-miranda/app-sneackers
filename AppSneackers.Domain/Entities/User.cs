@@ -36,9 +36,7 @@ namespace AppSneackers.Domain.Entities
                 Contact = new()
                 {
                     Address = new("a", "b", "c", "d", "e"),
-                    HomePhone = new(56, 65465465),
-                    MobilePhone = new(56, 65465465),
-                    WorkPhone = new(56, 65465465),
+                    MobilePhone = new(56, 65465465)
                 }
             };
             return user;

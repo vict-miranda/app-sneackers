@@ -3,5 +3,5 @@
 namespace AppSneackers.Domain.ValueObjects
 {
     [ComplexType]
-    public record PhoneNumber(int CountryCode, long Number);
+    public record PhoneNumber(int CountryCode, int Number);
 }

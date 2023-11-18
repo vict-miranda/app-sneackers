@@ -1,6 +1,5 @@
 ﻿using AppSneackers.Domain.Validations;
 using FluentValidation.Results;
-using System.Runtime.CompilerServices;
 
 namespace AppSneackers.Domain.Entities
 {
