@@ -15,9 +15,9 @@ namespace AppSneackers.API.Services.Interfaces
         /// <summary>
         /// Creates a new user
         /// </summary>
-        /// <param name="user">User information</param>
+        /// <param name="userDto">User information</param>
         /// <returns>An instance of <see cref="UserDto"/></returns>
-        Task<UserDto> CreateUser(CreateUserDto user);
+        Task<(UserDto, ServiceResult)> CreateUser(CreateUserDto userDto);
 
         /// <summary>
         /// Add a sneacker to an user

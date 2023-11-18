@@ -20,6 +20,6 @@ namespace AppSneackers.API.Mapping.Sneacker
 
         public int Rate { get; set; }
 
-        public UserDto User { get; set; }
+        //public UserDto User { get; set; }
     }
 }

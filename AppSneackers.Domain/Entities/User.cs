@@ -1,4 +1,6 @@
-﻿using AppSneackers.Domain.ValueObjects;
+﻿using AppSneackers.Domain.Validations;
+using AppSneackers.Domain.ValueObjects;
+using FluentValidation.Results;
 
 namespace AppSneackers.Domain.Entities
 {
@@ -67,6 +69,11 @@ namespace AppSneackers.Domain.Entities
         {
             //Sneackers.Where(x => x.Id != snickerId).ToList();
             Sneackers.RemoveAll(x => x.Id == snickerId);
+        }
+
+        public ValidationResult ValidateModel()
+        {
+            return new UserValidator().Validate(this);
         }
 
         //public Contact SetContact(string name, string brand, decimal price, decimal size, int year, int rate)

@@ -1,4 +1,8 @@
-﻿namespace AppSneackers.Domain.Entities
+﻿using AppSneackers.Domain.Validations;
+using FluentValidation.Results;
+using System.Runtime.CompilerServices;
+
+namespace AppSneackers.Domain.Entities
 {
     public class Sneacker : IEntity
     {
@@ -32,6 +36,14 @@
                 Year = year,
                 Rate = rate,
             };
+
+            var valid = ValidateModel(sneacker);
+            if (!valid.IsValid)
+            {
+                var ex = string.Join(", ", valid.Errors.Select(sns => sns.ErrorMessage.ToString()));
+                throw new ArgumentException(ex);
+            }
+
             return sneacker;
         }
 
@@ -43,6 +55,23 @@
             Size = size;
             Rate = rate;
             Year = year;
+
+            var valid = ValidateModel();
+            if (!valid.IsValid)
+            {
+                var ex = string.Join(", ", valid.Errors.Select(sns => sns.ErrorMessage.ToString()));
+                throw new ArgumentException(ex);
+            }
+        }
+
+        public ValidationResult ValidateModel()
+        {
+            return new SneackerValidator().Validate(this);
+        }
+
+        public static ValidationResult ValidateModel(Sneacker sneacker)
+        {
+            return new SneackerValidator().Validate(sneacker);
         }
     }
 }

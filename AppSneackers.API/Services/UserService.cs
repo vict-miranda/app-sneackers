@@ -4,6 +4,8 @@ using AppSneackers.API.Services.Interfaces;
 using AppSneackers.Domain.Entities;
 using AppSneackers.Domain.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AppSneackers.API.Services
 {
@@ -29,21 +31,30 @@ namespace AppSneackers.API.Services
         }
 
         /// <inheritdoc/>
-        public async Task<UserDto> CreateUser(CreateUserDto userDto)
+        public async Task<(UserDto, ServiceResult)> CreateUser(CreateUserDto userDto)
         {
+            ServiceResult serviceResult = new ServiceResult();
             User entity = User.CreateNew(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Password);
+
+            if (!entity.ValidateModel().IsValid)
+            {
+                return (null, new ServiceResult(entity.ValidateModel().Errors));
+            }
+
             await _userRepository.Create(entity);
 
-            return _mapper.Map<User, UserDto>(entity);
+            return (_mapper.Map<User, UserDto>(entity), serviceResult);
         }
 
         /// <inheritdoc/>
         public async Task<UserDto> AddSneacker(int userId, CreateSneackerDto snickerDto)
         {
+            ServiceResult serviceResult = new ServiceResult();
             var user = await _userRepository.GetById(userId);
+
             if (user == null)
             {
-                throw new ArgumentException("User not found");
+                return null;
             }
 
             user.AddSneacker(snickerDto.Name, snickerDto.Brand, snickerDto.Size, snickerDto.Price, snickerDto.Year, snickerDto.Rate);
@@ -61,7 +72,7 @@ namespace AppSneackers.API.Services
 
             if (user == null)
             {
-                throw new ArgumentException("User not found");
+                return null;
             }
 
             if (user.Sneackers != null && user.Sneackers.Count > 0)
@@ -82,7 +93,7 @@ namespace AppSneackers.API.Services
 
             if (user == null)
             {
-                throw new ArgumentException("User not found");
+                return null;
             }
 
             if (user.Sneackers != null && user.Sneackers.Count > 0)
