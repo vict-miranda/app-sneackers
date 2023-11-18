@@ -1,6 +1,8 @@
-﻿using AppSneackers.API.Mapping.Sneacker;
+﻿//using AppSneackers.API.Helpers;
+using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppSneackers.API.Controllers
@@ -21,7 +23,10 @@ namespace AppSneackers.API.Controllers
         /// </summary>
         /// <param name="userId">User Id</param>
         /// <returns></returns>
+        /// <response code="200">Gets successfully.</response>
+        /// <response code="401">Not authorized.</response>
         [HttpGet("{userId}")]
+        [Authorize]
         public async Task<IActionResult> Get(int userId)
         {
             var response = await _userService.GetSneackersByUserId(userId);
@@ -39,9 +44,9 @@ namespace AppSneackers.API.Controllers
         public async Task<IActionResult> Post(CreateUserDto user)
         {
             var (response, serviceResult) = await _userService.CreateUser(user);
-            if (serviceResult != null && serviceResult.Data != null)
+            if (serviceResult != null && (serviceResult.Data != null || serviceResult.ErrorMessage != null))
             {
-                return BadRequest(serviceResult.Data);
+                return BadRequest(serviceResult.Data != null ? serviceResult.Data : serviceResult.ErrorMessage);
             }
             return Ok(response);
         }

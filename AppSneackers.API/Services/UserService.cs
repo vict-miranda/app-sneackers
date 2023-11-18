@@ -4,8 +4,7 @@ using AppSneackers.API.Services.Interfaces;
 using AppSneackers.Domain.Entities;
 using AppSneackers.Domain.Repositories;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppSneackers.API.Services
 {
@@ -33,8 +32,19 @@ namespace AppSneackers.API.Services
         /// <inheritdoc/>
         public async Task<(UserDto, ServiceResult)> CreateUser(CreateUserDto userDto)
         {
+            var user = await _userRepository.GetAll().Where(x => x.Email.ToLower() == userDto.Email.ToLower()).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                return (null, new ServiceResult("Email is already registered"));
+            }
+
             ServiceResult serviceResult = new ServiceResult();
-            User entity = User.CreateNew(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Password);
+            User entity = User.CreateNew(
+                userDto.FirstName, 
+                userDto.LastName, 
+                userDto.Email, 
+                BCrypt.Net.BCrypt.HashPassword(userDto.Password)
+            );
 
             if (!entity.ValidateModel().IsValid)
             {
@@ -103,6 +113,24 @@ namespace AppSneackers.API.Services
             }
 
             return _mapper.Map<User, UserDto>(user);
+        }
+
+        public async Task<UserDto> GetUserById(int id)
+        {
+            var entity = await _userRepository.GetById(id);
+            return _mapper.Map<UserDto>(entity);
+        }
+
+        public async Task<UserDto> ValidateUserCredentials(string email, string password)
+        {
+            var user = await _userRepository.GetAll().Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                bool verified = BCrypt.Net.BCrypt.Verify(password, user.Password);
+                if (verified)
+                    return _mapper.Map<UserDto>(user);
+            }
+            return null;
         }
 
     }

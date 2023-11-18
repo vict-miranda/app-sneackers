@@ -13,6 +13,13 @@ namespace AppSneackers.API.Services
             
         }
 
+        public ServiceResult(string message)
+        {
+            ErrorMessage = message;
+            ExceptionType = null;
+            Data = null;
+        }
+
         public ServiceResult(Exception ex)
         {
             ErrorMessage = ex.Message;

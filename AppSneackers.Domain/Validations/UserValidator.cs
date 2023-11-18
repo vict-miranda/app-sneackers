@@ -25,7 +25,7 @@ namespace AppSneackers.Domain.Validations
             RuleFor(e => e.Password)
                 .NotNull().WithMessage("Password can not be null")
                 .NotEmpty().WithMessage("Password can not be null")
-                .MaximumLength(20).WithMessage("Password can not exceed 20 characters");
+                .MaximumLength(250).WithMessage("Password can not exceed 250 characters");
         }
     }
 }

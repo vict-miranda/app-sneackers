@@ -13,7 +13,7 @@ namespace AppSneackers.API.Mapping.User
 
         public string Email { get; private set; } = string.Empty;
 
-        public string Password { get; private set; }
+        //public string Password { get; private set; }
 
         public Contact? Contact { get; set; }
 
