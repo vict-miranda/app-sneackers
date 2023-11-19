@@ -1,6 +1,9 @@
-﻿using AppSneackers.API.Mapping.Sneacker;
+﻿using AppSneackers.API.Mapping;
+using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services.Interfaces;
+using AppSneackers.Domain.Common;
+using AppSneackers.Domain.Common.Extensions;
 using AppSneackers.Domain.Entities;
 using AppSneackers.Domain.Repositories;
 using AutoMapper;
@@ -25,6 +28,51 @@ namespace AppSneackers.API.Services
             var user = await _userRepository.GetUserById(userId);
 
             return _mapper.Map<User, UserDto>(user);
+        }
+
+        /// <inheritdoc/>
+        public async Task<UserSneackersResponseDto> GetSneackersByUserId(SneackersSearchDto filter)
+        {
+            var totalRecords = 0;
+            var user = await _userRepository.GetUserById(filter.UserId);
+            var mappedSneackers = new List<SneackerDto>();
+
+            if (!string.IsNullOrEmpty(filter.Search))
+            {
+                var sneackers = user.Sneackers.Where(x => x.Name.ToLower().Contains(filter.Search.ToLower()) || 
+                                                      x.Brand.ToLower().Contains(filter.Search.ToLower())).ToList();
+
+                mappedSneackers = _mapper.Map<List<Sneacker>, List<SneackerDto>>(sneackers);
+            } 
+            else
+            {
+                mappedSneackers = _mapper.Map<List<Sneacker>, List<SneackerDto>>(user.Sneackers);                
+            }
+
+            var query = mappedSneackers.AsQueryable();
+            mappedSneackers = (filter.SortBy.Any() ? query.OrderBy(filter.SortBy) : query.OrderByDescending(x => x.Id)).ToList();            
+
+            if (mappedSneackers.Count > 0)
+            {
+                totalRecords = mappedSneackers.Count;
+
+                if (filter.Page > 0 && filter.ItemsPerPage > 0)
+                {
+                    mappedSneackers = mappedSneackers
+                            .Skip((int)((filter.Page - 1) * filter.ItemsPerPage))
+                            .Take((int)filter.ItemsPerPage)
+                            .ToList();
+                }
+            }
+
+            return new UserSneackersResponseDto
+            {
+                Sneackers = mappedSneackers,
+                UserId = filter.UserId,
+                TotalRecords = totalRecords,
+                PageNumber = filter.Page,
+                PageSize = filter.ItemsPerPage
+            };
         }
 
         /// <inheritdoc/>

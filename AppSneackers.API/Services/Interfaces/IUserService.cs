@@ -1,5 +1,7 @@
-﻿using AppSneackers.API.Mapping.Sneacker;
+﻿using AppSneackers.API.Mapping;
+using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
+using AppSneackers.Domain.Common;
 
 namespace AppSneackers.API.Services.Interfaces
 {
@@ -8,9 +10,16 @@ namespace AppSneackers.API.Services.Interfaces
         /// <summary>
         /// Gets all sneackers from an user
         /// </summary>
-        /// <param name="userId">user indentifier</param>
+        /// <param name="userId">User indentifier</param>
         /// <returns>An instance of <see cref="UserDto"/></returns>
         Task<UserDto> GetSneackersByUserId(int userId);
+
+        /// <summary>
+        /// Gets filtered sneackers from an user
+        /// </summary>
+        /// <param name="filter">Filters</param>
+        /// <returns>An instance of <see cref="UserSneackersResponseDto"/></returns>
+        Task<UserSneackersResponseDto> GetSneackersByUserId(SneackersSearchDto filter);
 
         /// <summary>
         /// Creates a new user

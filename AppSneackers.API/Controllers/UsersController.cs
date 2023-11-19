@@ -1,6 +1,7 @@
 ﻿using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services.Interfaces;
+using AppSneackers.Domain.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,20 @@ namespace AppSneackers.API.Controllers
         {
             var response = await _userService.GetSneackersByUserId(userId);
             return Ok(response.Sneackers);
+        }
+
+        /// <summary>
+        /// Gets filtered sneackers from an user
+        /// </summary>
+        /// <param name="filter">Filter information</param>
+        /// <returns></returns>
+        /// <response code="200">Gets successfully.</response>
+        /// <response code="400">Bad Request.</response>
+        [HttpPost("GetSneackersByUserId")]
+        public async Task<IActionResult> GetSneackersByUserId(SneackersSearchDto filter)
+        {
+            var response = await _userService.GetSneackersByUserId(filter);
+            return Ok(response);
         }
 
         /// <summary>

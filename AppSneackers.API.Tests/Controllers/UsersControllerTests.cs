@@ -3,6 +3,7 @@ using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services;
 using AppSneackers.API.Services.Interfaces;
+using AppSneackers.Domain.Common;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -25,7 +26,7 @@ namespace AppSneackers.API.Tests.Controllers
         }
 
         [Test]
-        public async Task Get_OK()
+        public async Task GetAll_OK()
         {
             //Arrange
             var userDto = new UserDto { };
@@ -45,7 +46,28 @@ namespace AppSneackers.API.Tests.Controllers
         }
 
         [Test]
-        public async Task Post_OK()
+        public async Task GetSneackersFromUserFiltered_OK()
+        {
+            //Arrange
+            var userDto = new API.Mapping.UserSneackersResponseDto { };
+            var sneackerSearchDto = new SneackersSearchDto();
+
+            Mock.Arrange(() => _userService.GetSneackersByUserId(sneackerSearchDto))
+                .ReturnsAsync(userDto).OccursOnce();
+
+            //Act
+            var result = await _usersController.GetSneackersByUserId(sneackerSearchDto);
+            var contentResult = result as OkObjectResult;
+
+            //Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(contentResult, Is.Not.Null);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
+            Assert.AreEqual((int)HttpStatusCode.OK, contentResult.StatusCode);
+        }
+
+        [Test]
+        public async Task Post_CreateUser_OK()
         {
             //Arrange
             var userDto = new CreateUserDto { };
@@ -66,7 +88,7 @@ namespace AppSneackers.API.Tests.Controllers
         }
 
         [Test]
-        public async Task Post_Error()
+        public async Task Post_CreateUser_Error()
         {
             //Arrange
             var userDto = new CreateUserDto { };

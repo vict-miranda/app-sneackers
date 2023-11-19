@@ -1,6 +1,7 @@
 ﻿using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services;
+using AppSneackers.Domain.Common;
 using AppSneackers.Domain.Entities;
 using AppSneackers.Domain.Repositories;
 using AutoMapper;
@@ -48,6 +49,88 @@ namespace AppSneackers.API.Tests.Services
             //Assert
             Assert.That(result, Is.Not.Null);
             Assert.IsTrue(result.Email.Equals("test@test2.com"));
+        }
+
+        [Test]
+        public async Task GetSneackersByUserIdFiltered_OK()
+        {
+            //Arrange
+            var sneackerSearchDto = GetSneackersSearchDto();
+            sneackerSearchDto.Search = "nike";
+
+            User entity = User.CreateNew(
+                "Test",
+                "Test",
+                "test@test2.com",
+                "123456");
+            entity.AddSneacker("Nike Jordan", "Nike", 100, 1, 1900, 1);
+
+            Mock.Arrange(() => _userRepository.GetUserById(1))
+                .ReturnsAsync(entity).OccursOnce();
+
+            //Act
+            var result = await _userService.GetSneackersByUserId(sneackerSearchDto);
+
+            //Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.IsTrue(result.Sneackers.Count > 0);
+            Assert.IsTrue(result.Sneackers.Any(x => x.Brand.ToLower() == sneackerSearchDto.Search));
+        }
+
+        [Test]
+        public async Task GetSneackersByUserIdFiltered_NoFilter_OK()
+        {
+            //Arrange
+            var sneackerSearchDto = GetSneackersSearchDto();
+            sneackerSearchDto.Search = "";
+
+            User entity = User.CreateNew(
+                "Test",
+                "Test",
+                "test@test2.com",
+                "123456");
+            entity.AddSneacker("Nike Jordan", "Nike", 100, 1, 1900, 1);
+            entity.AddSneacker("Adidas Low 1", "Adidas", 100, 1, 1900, 1);
+
+            Mock.Arrange(() => _userRepository.GetUserById(1))
+                .ReturnsAsync(entity).OccursOnce();
+
+            //Act
+            var result = await _userService.GetSneackersByUserId(sneackerSearchDto);
+
+            //Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Sneackers, Is.Not.Null);
+            Assert.IsTrue(result.Sneackers.Count == 2);
+            Assert.IsTrue(result.Sneackers.Any(x => x.Brand.ToLower() == "adidas"));
+            Assert.IsTrue(result.Sneackers.Any(x => x.Brand.ToLower() == "nike"));
+        }
+
+        [Test]
+        public async Task GetSneackersByUserIdFiltered_NoResults_OK()
+        {
+            //Arrange
+            var sneackerSearchDto = GetSneackersSearchDto();
+            sneackerSearchDto.Search = "Puma";
+
+            User entity = User.CreateNew(
+                "Test",
+                "Test",
+                "test@test2.com",
+                "123456");
+            entity.AddSneacker("Nike Jordan", "Nike", 100, 1, 1900, 1);
+            entity.AddSneacker("Adidas Low 1", "Adidas", 100, 1, 1900, 1);
+
+            Mock.Arrange(() => _userRepository.GetUserById(1))
+                .ReturnsAsync(entity).OccursOnce();
+
+            //Act
+            var result = await _userService.GetSneackersByUserId(sneackerSearchDto);
+
+            //Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Sneackers, Is.Not.Null);
+            Assert.IsTrue(result.Sneackers.Count == 0);
         }
 
         [Test]
@@ -267,6 +350,21 @@ namespace AppSneackers.API.Tests.Services
                 Size = 10,
                 Year = 2023,
                 Rate = 5,
+            };
+        }
+
+        private SneackersSearchDto GetSneackersSearchDto()
+        {
+            return new SneackersSearchDto
+            {
+                UserId = 1,
+                Search = "",
+                Page = 1,
+                ItemsPerPage = 10,
+                SortBy = new List<SortBy>
+                {
+                    new SortBy { Key = "name", Order = "asc" }
+                }
             };
         }
 
