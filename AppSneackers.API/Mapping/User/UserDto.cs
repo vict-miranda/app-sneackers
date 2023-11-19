@@ -7,11 +7,11 @@ namespace AppSneackers.API.Mapping.User
     {
         public int Id { get; set; }
 
-        public string FirstName { get; private set; }
+        public string FirstName { get; set; }
 
-        public string LastName { get; private set; }
+        public string LastName { get; set; }
 
-        public string Email { get; private set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
         //public string Password { get; private set; }
 
