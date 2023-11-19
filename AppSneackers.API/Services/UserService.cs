@@ -22,9 +22,7 @@ namespace AppSneackers.API.Services
         /// <inheritdoc/>
         public async Task<UserDto> GetSneackersByUserId(int userId)
         {
-            var user = (await _userRepository.GetAsync(new CancellationToken(),
-                        d => d.Id == userId,
-                        includeProperties: "Sneackers")).FirstOrDefault();
+            var user = await _userRepository.GetUserById(userId);
 
             return _mapper.Map<User, UserDto>(user);
         }
@@ -32,7 +30,7 @@ namespace AppSneackers.API.Services
         /// <inheritdoc/>
         public async Task<(UserDto, ServiceResult)> CreateUser(CreateUserDto userDto)
         {
-            var user = await _userRepository.GetAll().Where(x => x.Email.ToLower() == userDto.Email.ToLower()).FirstOrDefaultAsync();
+            var user = _userRepository.GetAll().Where(x => x.Email.ToLower() == userDto.Email.ToLower()).FirstOrDefault();
             if (user != null)
             {
                 return (null, new ServiceResult("Email is already registered"));
@@ -76,9 +74,7 @@ namespace AppSneackers.API.Services
         /// <inheritdoc/>
         public async Task<UserDto> UpdateSneacker(int sneackerId, UpdateSneackerDto snickerDto)
         {
-            var user = (await _userRepository.GetAsync(new CancellationToken(),
-                        d => d.Id == snickerDto.UserId,
-                        includeProperties: "Sneackers")).FirstOrDefault();
+            var user = await _userRepository.GetUserById(snickerDto.UserId); 
 
             if (user == null)
             {
@@ -97,9 +93,7 @@ namespace AppSneackers.API.Services
         /// <inheritdoc/>
         public async Task<UserDto> RemoveSneacker(int userId, int sneackerId)
         {
-            var user = (await _userRepository.GetAsync(new CancellationToken(),
-                        d => d.Id == userId,
-                        includeProperties: "Sneackers")).FirstOrDefault();
+            var user = await _userRepository.GetUserById(userId);
 
             if (user == null)
             {
@@ -115,11 +109,11 @@ namespace AppSneackers.API.Services
             return _mapper.Map<User, UserDto>(user);
         }
 
-        public async Task<UserDto> GetUserById(int id)
-        {
-            var entity = await _userRepository.GetById(id);
-            return _mapper.Map<UserDto>(entity);
-        }
+        //public async Task<UserDto> GetUserById(int id)
+        //{
+        //    var entity = await _userRepository.GetById(id);
+        //    return _mapper.Map<UserDto>(entity);
+        //}
 
         public async Task<UserDto> ValidateUserCredentials(string email, string password)
         {

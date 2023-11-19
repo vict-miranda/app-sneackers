@@ -48,7 +48,7 @@ namespace AppSneackers.API.Services.Interfaces
         /// </summary>
         /// <param name="id">User indenfier</param>
         /// <returns>An instance of <see cref="UserDto"/></returns>
-        Task<UserDto> GetUserById(int id);
+        //Task<UserDto> GetUserById(int id);
 
         /// <summary>
         /// Validates an user

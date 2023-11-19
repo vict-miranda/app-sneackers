@@ -33,7 +33,7 @@ namespace AppSneackers.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthorizationDto _userData)
         {
-            if (_userData != null && _userData.Email != null && _userData.Password != null)
+            if (_userData != null && !string.IsNullOrEmpty(_userData.Email) && !string.IsNullOrEmpty(_userData.Password))
             {
                 var user = await GetUser(_userData.Email, _userData.Password);
 

@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSneackers.API.Tests", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSneackers.Domain.Tests", "AppSneackers.Domain.Tests\AppSneackers.Domain.Tests.csproj", "{EA8A8F4C-8F65-4745-A684-DD267F8BAF19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppSneackers.Infrastructure.Tests", "AppSneackers.Infrastructure.Tests\AppSneackers.Infrastructure.Tests.csproj", "{78F40417-A578-4FE5-9F76-127D74EBAFC8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +41,6 @@ Global
 		{EA8A8F4C-8F65-4745-A684-DD267F8BAF19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA8A8F4C-8F65-4745-A684-DD267F8BAF19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA8A8F4C-8F65-4745-A684-DD267F8BAF19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78F40417-A578-4FE5-9F76-127D74EBAFC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78F40417-A578-4FE5-9F76-127D74EBAFC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78F40417-A578-4FE5-9F76-127D74EBAFC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78F40417-A578-4FE5-9F76-127D74EBAFC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,7 +48,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{755684E3-2264-4F92-B9DE-F53308031D25} = {DDDE8D7F-BEBD-4518-B565-971E42114B37}
 		{EA8A8F4C-8F65-4745-A684-DD267F8BAF19} = {DDDE8D7F-BEBD-4518-B565-971E42114B37}
-		{78F40417-A578-4FE5-9F76-127D74EBAFC8} = {DDDE8D7F-BEBD-4518-B565-971E42114B37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {82CD0F00-0D7D-441C-B352-319B0E902DBA}

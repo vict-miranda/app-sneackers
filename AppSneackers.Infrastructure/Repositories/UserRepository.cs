@@ -10,5 +10,14 @@ namespace AppSneackers.Infrastructure.Repositories
         {
 
         }
+
+        public async Task<User> GetUserById(int userId)
+        {
+            var respose = (await GetAsync(new CancellationToken(),
+                        d => d.Id == userId,
+                        includeProperties: "Sneackers")).FirstOrDefault();
+
+            return respose;
+        }
     }
 }

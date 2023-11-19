@@ -40,6 +40,7 @@ namespace AppSneackers.API.Controllers
         /// <response code="200">Created successfully.</response>
         /// <response code="400">Bad Request.</response>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post(CreateUserDto user)
         {
             var (response, serviceResult) = await _userService.CreateUser(user);
