@@ -4,7 +4,7 @@ using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services.Interfaces;
 using AppSneackers.Domain.Common;
 using AppSneackers.Domain.Common.Extensions;
-using AppSneackers.Domain.Entities;
+using AppSneackers.Domain.Aggregates;
 using AppSneackers.Domain.Repositories;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -89,13 +89,15 @@ namespace AppSneackers.API.Services
                 userDto.FirstName, 
                 userDto.LastName, 
                 userDto.Email, 
-                BCrypt.Net.BCrypt.HashPassword(userDto.Password)
+                userDto.Password
             );
 
             if (!entity.ValidateModel().IsValid)
             {
                 return (null, new ServiceResult(entity.ValidateModel().Errors));
             }
+
+            entity.SetHashedPassword(BCrypt.Net.BCrypt.HashPassword(userDto.Password));            
 
             await _userRepository.Create(entity);
 
@@ -156,12 +158,6 @@ namespace AppSneackers.API.Services
 
             return _mapper.Map<User, UserDto>(user);
         }
-
-        //public async Task<UserDto> GetUserById(int id)
-        //{
-        //    var entity = await _userRepository.GetById(id);
-        //    return _mapper.Map<UserDto>(entity);
-        //}
 
         public async Task<UserDto> ValidateUserCredentials(string email, string password)
         {

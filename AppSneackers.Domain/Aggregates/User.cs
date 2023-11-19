@@ -2,7 +2,7 @@
 using AppSneackers.Domain.ValueObjects;
 using FluentValidation.Results;
 
-namespace AppSneackers.Domain.Entities
+namespace AppSneackers.Domain.Aggregates
 {
     public class User : IEntity
     {
@@ -61,6 +61,11 @@ namespace AppSneackers.Domain.Entities
             }
 
             sneacker.UpdateSneacker(name, brand, price, size, year, rate);
+        }
+
+        public void SetHashedPassword(string password)
+        {
+            Password = password;
         }
 
         public void RemoveSneacker(int snickerId)

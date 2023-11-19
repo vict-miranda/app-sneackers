@@ -6,7 +6,7 @@ namespace AppSneackers.API.Mapping.Sneacker
     {
         public SneackerProfile()
         {
-            CreateMap<SneackerDto, Domain.Entities.Sneacker>().ReverseMap();
+            CreateMap<SneackerDto, Domain.Aggregates.Sneacker>().ReverseMap();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AppSneackers.Domain.Validations;
 using FluentValidation.Results;
 
-namespace AppSneackers.Domain.Entities
+namespace AppSneackers.Domain.Aggregates
 {
     public class Sneacker : IEntity
     {

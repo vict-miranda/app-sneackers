@@ -1,6 +1,6 @@
 ﻿using AppSneackers.API.Mapping.Sneacker;
 using AppSneackers.API.Mapping.User;
-using AppSneackers.Domain.Entities;
+using AppSneackers.Domain.Aggregates;
 using AutoMapper;
 
 namespace AppSneackers.API.Tests.Mapping

@@ -1,4 +1,4 @@
-﻿using AppSneackers.Domain.Entities;
+﻿using AppSneackers.Domain.Aggregates;
 using FluentValidation;
 
 namespace AppSneackers.Domain.Validations

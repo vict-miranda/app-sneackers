@@ -1,4 +1,4 @@
-﻿using AppSneackers.Domain.Entities;
+﻿using AppSneackers.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using AppSneackers.Domain.Repositories;
 using System.Linq.Expressions;

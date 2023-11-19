@@ -1,4 +1,4 @@
-﻿using AppSneackers.Domain.Entities;
+﻿using AppSneackers.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppSneackers.Infrastructure

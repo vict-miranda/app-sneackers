@@ -1,4 +1,4 @@
-﻿namespace AppSneackers.Domain.Entities
+﻿namespace AppSneackers.Domain.Aggregates
 {
     public interface IEntity
     {

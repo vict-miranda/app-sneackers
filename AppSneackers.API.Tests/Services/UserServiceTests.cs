@@ -2,7 +2,7 @@
 using AppSneackers.API.Mapping.User;
 using AppSneackers.API.Services;
 using AppSneackers.Domain.Common;
-using AppSneackers.Domain.Entities;
+using AppSneackers.Domain.Aggregates;
 using AppSneackers.Domain.Repositories;
 using AutoMapper;
 using Telerik.JustMock;
@@ -137,12 +137,12 @@ namespace AppSneackers.API.Tests.Services
         public async Task CreateUser_OK()
         {
             //Arrange
-            var createUserDto = new CreateUserDto { FirstName = "Test", LastName = "Test", Email = "test@test.com", Password = "123456" };
+            var createUserDto = new CreateUserDto { FirstName = "Test", LastName = "Test", Email = "test@test.com", Password = "Test2023." };
             User entity = User.CreateNew(
                 "Test",
                 "Test",
                 "test@test2.com",
-                "123456");
+                "Test2023.");
 
             List<User> users = new List<User>();
             users.Add(entity);

@@ -1,4 +1,4 @@
-﻿using AppSneackers.Domain.Entities;
+﻿using AppSneackers.Domain.Aggregates;
 using AppSneackers.Domain.Repositories;
 using Telerik.JustMock;
 

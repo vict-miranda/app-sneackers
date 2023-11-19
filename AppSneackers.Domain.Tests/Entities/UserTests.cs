@@ -1,4 +1,4 @@
-﻿using AppSneackers.Domain.Entities;
+﻿using AppSneackers.Domain.Aggregates;
 
 namespace AppSneackers.Domain.Tests.Entities
 {

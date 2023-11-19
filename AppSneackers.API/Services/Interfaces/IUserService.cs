@@ -53,13 +53,6 @@ namespace AppSneackers.API.Services.Interfaces
         Task<UserDto> RemoveSneacker(int userId, int sneackerId);
 
         /// <summary>
-        /// Gets an user by id
-        /// </summary>
-        /// <param name="id">User indenfier</param>
-        /// <returns>An instance of <see cref="UserDto"/></returns>
-        //Task<UserDto> GetUserById(int id);
-
-        /// <summary>
         /// Validates an user
         /// </summary>
         /// <param name="email">User Email</param>

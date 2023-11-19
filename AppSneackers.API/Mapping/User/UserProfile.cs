@@ -6,7 +6,7 @@ namespace AppSneackers.API.Mapping.User
     {
         public UserProfile()
         {
-            CreateMap<UserDto, Domain.Entities.User>().ReverseMap();
+            CreateMap<UserDto, Domain.Aggregates.User>().ReverseMap();
         }
     }
 }
